@@ -1,0 +1,15 @@
+.canvas{
+    border: 1px solid blue;
+}
+.col-8{
+    border: 1px solid red;
+    margin-left: 0px;
+}
+.enemy{
+    border: 1px solid green;
+    height: 60px;
+}
+button{
+    height: 20px;
+    width: 70px;
+}

@@ -1,4 +1,9 @@
-.canvas{
+body{
+    background-image: url(../img/background.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+canvas{
     border: 1px solid blue;
 }
 .col-8{

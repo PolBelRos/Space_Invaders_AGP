@@ -1,0 +1,41 @@
+.canvas{
+    border: 1px solid blue;
+    position: relative;
+}
+.col-8{
+    border: 1px solid red;
+    margin-left: 0px;
+}
+.enemy{
+    border: 1px solid green;
+    height: 60px;
+    image-rendering: pixelated;
+    margin-left: 20px;
+    align-content: center;
+    position: relative;
+}
+button{
+    height: 20px;
+    width: 70px;
+}
+.invader-image{
+    width: 100%;
+    height: auto;
+    position: absolute;
+    right: 50%;
+    transform: translate(50%, -50%);
+}
+.no-mg{
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+.lane{
+    width: 50%;
+    position: absolute;
+}
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}

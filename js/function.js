@@ -141,6 +141,7 @@ function bulletComponent(width, height, color, x, y) {
                     this.x = 0;
                     this.y = 0;
                     enemies[i].itCrashed();
+                    addScore(1);
                 }
             }
             else if (this.fromEnemy == true){
@@ -235,7 +236,14 @@ function PlayerShoot(){
             lastShotPlayerOne = currentTime;
         }
     }
-
+    if(GameArea.keys && GameArea.keys[32]){
+        if(currentTime - lastShotPlayerTwo >= cooldown){
+            let Bullet = new bulletComponent(BULLET_WIDTH, 20, "orange", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
+            Bullet.speedY = -1 * SPEED_BULLET;
+            bullets.push(Bullet);
+            lastShotPlayerTwo = currentTime;
+        }
+    }
 }
 
 function addScore(player){

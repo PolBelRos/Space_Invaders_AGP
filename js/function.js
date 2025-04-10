@@ -133,7 +133,6 @@ function bulletComponent(width, height, color, x, y) {
         ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
         
-        
         for(let i = 0; i < enemies.length; i++){
             if(this.fromEnemy == false){
                 if(this.crashObject(enemies[i])){

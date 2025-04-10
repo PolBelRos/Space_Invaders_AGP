@@ -1,21 +1,29 @@
 const SPEED = 5;
 const SPEED_BULLET = 25;
+const SPEED_ENEMY_BULLET = 15;
 const BULLET_WIDTH = 10;
 const NR_ENEMY_ROW = 20;
 const ENEMY_SPEED = 1.5;
 
 var lastShotPlayerOne = 0;
 var lastShotPlayerTwo = 0;
-var cooldown = 500;
+var lastShotEnemy = 0;
+
+var cooldown = 600;
+var enemyCooldown = 200;
 
 var bullets = [];
+var enemyBullets = [];
 var enemies = [];
 
 function StartGame(){
     PlayerOne = new component(50, 30, "blue", 10, 720);
-    PlayerTwo = new component(50, 30, "red", 740, 720);
-    createEnemies(50,50,"purple");
-    createEnemies(50,120,"purple");
+    PlayerTwo = new component(50, 30, "green", 740, 720);
+    createEnemies(50, 50, "purple");
+    createEnemies(50, 120, "purple");
+    createEnemies(50, 190, "purple");
+    createEnemies(50, 260, "purple");
+    createEnemies(50, 330, "purple");
     GameArea.start();
 }
 
@@ -66,8 +74,6 @@ function component(width, height, color, x, y) {
         if (this.x < 0) {
             this.x = 0;
         }
-<<<<<<< HEAD
-=======
     }
 }
 
@@ -165,7 +171,6 @@ function bulletComponent(width, height, color, x, y) {
             crash = false;
         }
         return crash;
->>>>>>> enemies
     }
 }
 
@@ -194,6 +199,10 @@ function updateGameArea() {
     PlayerShoot();
 
     for (let i = 0; i < enemies.length; i++){
+        ShootEnemy(i);
+    }
+
+    for (let i = 0; i < enemies.length; i++){
         enemies[i].newPos();
         enemies[i].update();
     }
@@ -203,6 +212,10 @@ function updateGameArea() {
         bullets[i].update();
     }
 
+    for (let i = 0; i < enemyBullets.length; i++){
+        enemyBullets[i].newPos();
+        enemyBullets[i].update();
+    }
 }
 
 function leftMove(player){
@@ -245,5 +258,22 @@ function createEnemies(x, y, color){
         enemies.push(enemy);
 
         pos += 70;
+    }
+}
+
+function ShootEnemy(i) {
+    let currentTime = new Date().getTime();
+    var randomNum = Math.random() * 1000;
+
+    if(enemies[i].width != 0 && enemies.height != 0){
+        if(randomNum >= 999){
+            if(currentTime - lastShotEnemy >= enemyCooldown){
+                let Bullet = new bulletComponent(BULLET_WIDTH, 20, "red", enemies[i].x + (enemies[i].width/2 - (BULLET_WIDTH / 2)), enemies[i].y + enemies[i].height);
+                Bullet.speedY = 1 * SPEED_ENEMY_BULLET;
+                Bullet.fromEnemy = true;
+                enemyBullets.push(Bullet);
+                lastShotEnemy = currentTime;
+            }
+        }
     }
 }

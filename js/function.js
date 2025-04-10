@@ -1,4 +1,5 @@
 var PlayerOne;
+const OBJETIVE = 100;
 const SPEED = 5;
 const SPEED_BULLET = 25;
 const BULLET_WIDTH = 10;
@@ -7,6 +8,11 @@ var lastShot = 0;
 var cooldown = 300;
 
 var bullets = [];
+
+let puntuacion = {
+    1: 0,
+    2: 0
+}
 
 function StartGame(){
     PlayerOne = new component(50, 30, "blue", 10, 720);
@@ -85,6 +91,8 @@ function updateGameArea() {
         bullets[i].update();
     }
 
+    
+
 }
 
 function leftMove(player){
@@ -111,4 +119,11 @@ function PlayerShoot(player, key){
             lastShot = currentTime;
         }
     }
+}
+
+function addScore(player){
+    if (puntuacion[1] >= OBJETIVE || puntuacion[2] >= OBJETIVE) return;
+
+    puntuacion[player]++;
+    document.getElementById('score${player}').textContent = puntuacion[player];
 }

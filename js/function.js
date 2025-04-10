@@ -6,7 +6,7 @@ const ENEMY_SPEED = 1.5;
 
 var lastShotPlayerOne = 0;
 var lastShotPlayerTwo = 0;
-var cooldown = 300;
+var cooldown = 500;
 
 var bullets = [];
 var enemies = [];
@@ -111,6 +111,61 @@ function enemyComponent(width, height, color, x, y) {
     }
 }
 
+function bulletComponent(width, height, color, x, y) {
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.x = x;
+    this.y = y;
+    this.fromEnemy = false;
+    this.update = function(){
+        ctx = GameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        
+        
+        for(let i = 0; i < enemies.length; i++){
+            if(this.fromEnemy == false){
+                if(this.crashObject(enemies[i])){
+                    this.width = 0;
+                    this.height = 0;
+                    this.x = 0;
+                    this.y = 0;
+                    enemies[i].itCrashed();
+                }
+            }
+            else if (this.fromEnemy == true){
+                if(this.crashObject(PlayerOne) || this.crashObject(PlayerTwo)){
+                    this.width = 0;
+                    this.height = 0;
+                    this.x = 0;
+                    this.y = 0;
+                }
+            }
+        }
+    }
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+    }
+    this.crashObject = function(enemy) {
+        var left = this.x;
+        var right = this.x + (this.width);
+        var top = this.y;
+        var bottom = this.y + (this.height);
+        var crashLeft = enemy.x;
+        var crashRight = enemy.x + (enemy.width);
+        var crashTop = enemy.y;
+        var crashBottom = enemy.y + (enemy.height);
+        var crash = true;
+        if((bottom < crashTop) || (top > crashBottom) || (right < crashLeft) || (left > crashRight)){
+            crash = false;
+        }
+        return crash;
+    }
+}
+
 function updateGameArea() {
     GameArea.clear();
 
@@ -164,7 +219,7 @@ function PlayerShoot(){
     let currentTime = new Date().getTime();
     if(GameArea.keys && GameArea.keys[32]){
         if(currentTime - lastShotPlayerOne >= cooldown){
-            let Bullet = new component(BULLET_WIDTH, 20, "orange", PlayerOne.x + (PlayerOne.width/2 - (BULLET_WIDTH / 2)), PlayerOne.y);
+            let Bullet = new bulletComponent(BULLET_WIDTH, 20, "orange", PlayerOne.x + (PlayerOne.width/2 - (BULLET_WIDTH / 2)), PlayerOne.y);
             Bullet.speedY = -1 * SPEED_BULLET;
             bullets.push(Bullet);
             lastShotPlayerOne = currentTime;
@@ -172,7 +227,7 @@ function PlayerShoot(){
     }
     if(GameArea.keys && GameArea.keys[96]){
         if(currentTime - lastShotPlayerTwo >= cooldown){
-            let Bullet = new component(BULLET_WIDTH, 20, "orange", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
+            let Bullet = new bulletComponent(BULLET_WIDTH, 20, "orange", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
             Bullet.speedY = -1 * SPEED_BULLET;
             bullets.push(Bullet);
             lastShotPlayerTwo = currentTime;

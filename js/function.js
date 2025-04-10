@@ -1,6 +1,8 @@
 const SPEED = 5;
 const SPEED_BULLET = 25;
 const BULLET_WIDTH = 10;
+const NR_ENEMY_ROW = 20;
+const ENEMY_SPEED = 1.5;
 
 var lastShotPlayerOne = 0;
 var lastShotPlayerTwo = 0;
@@ -13,13 +15,14 @@ function StartGame(){
     PlayerOne = new component(50, 30, "blue", 10, 720);
     PlayerTwo = new component(50, 30, "red", 740, 720);
     createEnemies(50,50,"purple");
+    createEnemies(50,120,"purple");
     GameArea.start();
 }
 
 var GameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = 800;
+        this.canvas.width = 1515;
         this.canvas.height = 800;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -52,13 +55,24 @@ function component(width, height, color, x, y) {
     this.newPos = function() {
         this.x += this.speedX;
         this.y += this.speedY;
+        this.hitBorder();
+    }
+    this.hitBorder = function() {
+        var limitRight = GameArea.canvas.width - this.width;
+
+        if (this.x > limitRight) {
+            this.x = limitRight;
+        }
+        if (this.x < 0) {
+            this.x = 0;
+        }
     }
 }
 
 function enemyComponent(width, height, color, x, y) {
     this.width = width;
     this.height = height;
-    this.speedX = 0;
+    this.speedX = -1 * ENEMY_SPEED;
     this.speedY = 0;
     this.x = x;
     this.y = y;
@@ -70,6 +84,30 @@ function enemyComponent(width, height, color, x, y) {
     this.newPos = function() {
         this.x += this.speedX;
         this.y += this.speedY;
+        this.hitBorder();
+    }
+    this.itCrashed = function(){
+        this.x = 0;
+        this.y = 0;
+        this.width = 0;
+        this.height = 0;
+        this.speedX = 0;
+    }
+    this.hitBorder = function() {
+        var limitRight = GameArea.canvas.width - this.width;
+
+        if (this.x > limitRight) {
+            for(let i = 0; i < enemies.length; i++){
+                enemies[i].speedX *= -1;
+                enemies[i].y += 10;
+            }
+        }
+        if (this.x < 0) {
+            for(let i = 0; i < enemies.length; i++){
+                enemies[i].speedX *= -1;
+                enemies[i].y += 10;
+            }
+        }
     }
 }
 
@@ -144,7 +182,7 @@ function PlayerShoot(){
 
 function createEnemies(x, y, color){
     var pos = x;
-    for(let i = 0; i < 9; i++){
+    for(let i = 0; i < NR_ENEMY_ROW; i++){
         enemy = new enemyComponent(50, 50, color, pos, y);
         enemies.push(enemy);
 

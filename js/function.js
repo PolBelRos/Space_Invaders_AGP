@@ -55,6 +55,7 @@ function component(width, height, color, x, y) {
     this.speedY = 0;
     this.x = x;
     this.y = y;
+    this.lifes = 5;
     this.update = function(){
         ctx = GameArea.context;
         ctx.fillStyle = color;
@@ -144,7 +145,13 @@ function bulletComponent(width, height, color, x, y) {
                 }
             }
             else if (this.fromEnemy == true){
-                if(this.crashObject(PlayerOne) || this.crashObject(PlayerTwo)){
+                if(this.crashObject(PlayerOne)){
+                    this.width = 0;
+                    this.height = 0;
+                    this.x = 0;
+                    this.y = 0;
+                }
+                if(this.crashObject(PlayerTwo)){
                     this.width = 0;
                     this.height = 0;
                     this.x = 0;

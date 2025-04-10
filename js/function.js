@@ -1,5 +1,5 @@
 var PlayerOne;
-const OBJETIVE = 100;
+const OBJETIVE = 10;
 const SPEED = 5;
 const SPEED_BULLET = 25;
 const BULLET_WIDTH = 10;
@@ -9,10 +9,10 @@ var cooldown = 300;
 
 var bullets = [];
 
-let puntuacion = {
+let score = {
     1: 0,
     2: 0
-}
+};
 
 function StartGame(){
     PlayerOne = new component(50, 30, "blue", 10, 720);
@@ -122,8 +122,28 @@ function PlayerShoot(player, key){
 }
 
 function addScore(player){
-    if (puntuacion[1] >= OBJETIVE || puntuacion[2] >= OBJETIVE) return;
+    if (score[1] >= OBJETIVE || score[2] >= OBJETIVE) {
+        return;
+    }
 
-    puntuacion[player]++;
-    document.getElementById('score${player}').textContent = puntuacion[player];
+    score[player]++;
+    document.getElementById(`score${player}`).textContent = score[player];
+
+    if (score[player] === OBJETIVE){
+        document.getElementById("victoryMessage").textContent = `Victoria ${player}`;
+        document.getElementById("restartBtn").style.display = "inline-block";
+    }
+}
+
+function restartGame(){
+    score[1] = 0;
+    score[2] = 0;
+
+    document.getElementById("score1").textContent = "0";
+
+    document.getElementById("score2").textContent = "0";
+
+    document.getElementById("victoryMessage").textContent = "";
+
+    document.getElementById("restartBtn").style.display = "none";
 }

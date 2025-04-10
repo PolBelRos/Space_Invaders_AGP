@@ -7,11 +7,12 @@ var lastShotPlayerTwo = 0;
 var cooldown = 300;
 
 var bullets = [];
+var enemies = [];
 
 function StartGame(){
     PlayerOne = new component(50, 30, "blue", 10, 720);
     PlayerTwo = new component(50, 30, "red", 740, 720);
-    Enemy = new enemyComponent(50,50,"purple", 120,120);
+    createEnemies(50,50,"purple");
     GameArea.start();
 }
 
@@ -94,10 +95,12 @@ function updateGameArea() {
     PlayerTwo.newPos();
     PlayerOne.update();
     PlayerTwo.update();
-    Enemy.newPos();
-    Enemy.update();
-    
     PlayerShoot();
+
+    for (let i = 0; i < enemies.length; i++){
+        enemies[i].newPos();
+        enemies[i].update();
+    }
 
     for (let i = 0; i < bullets.length; i++){
         bullets[i].newPos();
@@ -136,5 +139,15 @@ function PlayerShoot(){
             bullets.push(Bullet);
             lastShotPlayerTwo = currentTime;
         }
+    }
+}
+
+function createEnemies(x, y, color){
+    var pos = x;
+    for(let i = 0; i < 9; i++){
+        enemy = new enemyComponent(50, 50, color, pos, y);
+        enemies.push(enemy);
+
+        pos += 70;
     }
 }

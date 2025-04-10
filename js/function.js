@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 var PlayerOne;
 const OBJETIVE = 10;
-=======
->>>>>>> ab959d5e44f686ce8391a7566efca82b7d469777
 const SPEED = 5;
 const SPEED_BULLET = 25;
 const BULLET_WIDTH = 10;
@@ -32,11 +29,7 @@ function StartGame(){
 var GameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-<<<<<<< HEAD
-        this.canvas.width = 1325;
-=======
         this.canvas.width = 1515;
->>>>>>> ab959d5e44f686ce8391a7566efca82b7d469777
         this.canvas.height = 800;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -80,8 +73,7 @@ function component(width, height, color, x, y) {
         if (this.x < 0) {
             this.x = 0;
         }
-<<<<<<< HEAD
-=======
+
     }
 }
 
@@ -179,7 +171,6 @@ function bulletComponent(width, height, color, x, y) {
             crash = false;
         }
         return crash;
->>>>>>> enemies
     }
 }
 
@@ -244,7 +235,7 @@ function PlayerShoot(){
             lastShotPlayerOne = currentTime;
         }
     }
-<<<<<<< HEAD
+
 }
 
 function addScore(player){
@@ -272,7 +263,7 @@ function restartGame(){
     document.getElementById("victoryMessage").textContent = "";
 
     document.getElementById("restartBtn").style.display = "none";
-=======
+
     if(GameArea.keys && GameArea.keys[96]){
         if(currentTime - lastShotPlayerTwo >= cooldown){
             let Bullet = new bulletComponent(BULLET_WIDTH, 20, "orange", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
@@ -291,5 +282,4 @@ function createEnemies(x, y, color){
 
         pos += 70;
     }
->>>>>>> ab959d5e44f686ce8391a7566efca82b7d469777
 }

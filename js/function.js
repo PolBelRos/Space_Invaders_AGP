@@ -11,7 +11,7 @@ var bullets = [];
 function StartGame(){
     PlayerOne = new component(50, 30, "blue", 10, 720);
     PlayerTwo = new component(50, 30, "red", 740, 720);
-    
+    Enemy = new enemyComponent(50,50,"purple", 120,120);
     GameArea.start();
 }
 
@@ -54,6 +54,24 @@ function component(width, height, color, x, y) {
     }
 }
 
+function enemyComponent(width, height, color, x, y) {
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.x = x;
+    this.y = y;
+    this.update = function(){
+        ctx = GameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+    }
+}
+
 function updateGameArea() {
     GameArea.clear();
 
@@ -76,7 +94,9 @@ function updateGameArea() {
     PlayerTwo.newPos();
     PlayerOne.update();
     PlayerTwo.update();
-
+    Enemy.newPos();
+    Enemy.update();
+    
     PlayerShoot();
 
     for (let i = 0; i < bullets.length; i++){

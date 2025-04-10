@@ -1,1 +1,1 @@
-# pito
+# funcionamiento player

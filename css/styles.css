@@ -1,10 +1,20 @@
+
 .canvas{
     border: 1px solid blue;
     position: relative;
 }
-.col-8{
+.col{
     border: 1px solid red;
     margin-left: 0px;
+    height: 100px;
+}
+.player1{
+    text-align: left;
+    float: left;
+}
+.player2{
+    text-align: right;
+    float: right;
 }
 .enemy{
     border: 1px solid green;
@@ -38,4 +48,5 @@ button{
 canvas {
     border:1px solid #d3d3d3;
     background-color: #f1f1f1;
+    transform: translate(22%, 0%);
 }

@@ -1,9 +1,9 @@
-var PlayerOne;
 const SPEED = 5;
 const SPEED_BULLET = 25;
 const BULLET_WIDTH = 10;
 
-var lastShot = 0;
+var lastShotPlayerOne = 0;
+var lastShotPlayerTwo = 0;
 var cooldown = 300;
 
 var bullets = [];
@@ -77,8 +77,7 @@ function updateGameArea() {
     PlayerOne.update();
     PlayerTwo.update();
 
-    PlayerShoot(PlayerOne, 32); 
-    PlayerShoot(PlayerTwo, 96);
+    PlayerShoot();
 
     for (let i = 0; i < bullets.length; i++){
         bullets[i].newPos();
@@ -100,15 +99,22 @@ function stopMove(){
     PlayerTwo.speedX = 0;
 }
 
-function PlayerShoot(player, key){
+function PlayerShoot(){
     let currentTime = new Date().getTime();
-    if(GameArea.keys && GameArea.keys[key]){
-        //Falta poner un timer para la creacion de balas
-        if(currentTime - lastShot >= cooldown){
-            let Bullet = new component(BULLET_WIDTH, 20, "orange", player.x + (player.width/2 - (BULLET_WIDTH / 2)), player.y);
+    if(GameArea.keys && GameArea.keys[32]){
+        if(currentTime - lastShotPlayerOne >= cooldown){
+            let Bullet = new component(BULLET_WIDTH, 20, "orange", PlayerOne.x + (PlayerOne.width/2 - (BULLET_WIDTH / 2)), PlayerOne.y);
             Bullet.speedY = -1 * SPEED_BULLET;
             bullets.push(Bullet);
-            lastShot = currentTime;
+            lastShotPlayerOne = currentTime;
+        }
+    }
+    if(GameArea.keys && GameArea.keys[96]){
+        if(currentTime - lastShotPlayerTwo >= cooldown){
+            let Bullet = new component(BULLET_WIDTH, 20, "orange", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
+            Bullet.speedY = -1 * SPEED_BULLET;
+            bullets.push(Bullet);
+            lastShotPlayerTwo = currentTime;
         }
     }
 }

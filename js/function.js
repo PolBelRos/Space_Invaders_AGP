@@ -51,6 +51,17 @@ function component(width, height, color, x, y) {
     this.newPos = function() {
         this.x += this.speedX;
         this.y += this.speedY;
+        this.hitBorder();
+    }
+    this.hitBorder = function() {
+        var limitRight = GameArea.canvas.width - this.width;
+
+        if (this.x > limitRight) {
+            this.x = limitRight;
+        }
+        if (this.x < 0) {
+            this.x = 0;
+        }
     }
 }
 

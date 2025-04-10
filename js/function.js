@@ -3,7 +3,7 @@ const OBJETIVE = 10;
 const SPEED = 5;
 const SPEED_BULLET = 25;
 const BULLET_WIDTH = 10;
-const NR_ENEMY_ROW = 20;
+const NR_ENEMY_ROW = 15;
 const ENEMY_SPEED = 1.5;
 
 var lastShotPlayerOne = 0;
@@ -24,12 +24,13 @@ function StartGame(){
     createEnemies(50,50,"purple");
     createEnemies(50,120,"purple");
     GameArea.start();
+    
 }
 
 var GameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = 1515;
+        this.canvas.width = 1500;
         this.canvas.height = 800;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -126,6 +127,7 @@ function bulletComponent(width, height, color, x, y) {
     this.speedY = 0;
     this.x = x;
     this.y = y;
+    this.player = 0;
     this.fromEnemy = false;
     this.update = function(){
         ctx = GameArea.context;
@@ -141,7 +143,7 @@ function bulletComponent(width, height, color, x, y) {
                     this.x = 0;
                     this.y = 0;
                     enemies[i].itCrashed();
-                    addScore(1);
+                    addScore(this.player);
                 }
             }
             else if (this.fromEnemy == true){
@@ -232,14 +234,16 @@ function PlayerShoot(){
         if(currentTime - lastShotPlayerOne >= cooldown){
             let Bullet = new bulletComponent(BULLET_WIDTH, 20, "orange", PlayerOne.x + (PlayerOne.width/2 - (BULLET_WIDTH / 2)), PlayerOne.y);
             Bullet.speedY = -1 * SPEED_BULLET;
+            Bullet.player = 1;
             bullets.push(Bullet);
             lastShotPlayerOne = currentTime;
         }
     }
-    if(GameArea.keys && GameArea.keys[32]){
+    if(GameArea.keys && GameArea.keys[76]){
         if(currentTime - lastShotPlayerTwo >= cooldown){
             let Bullet = new bulletComponent(BULLET_WIDTH, 20, "orange", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
             Bullet.speedY = -1 * SPEED_BULLET;
+            Bullet.player = 2;
             bullets.push(Bullet);
             lastShotPlayerTwo = currentTime;
         }

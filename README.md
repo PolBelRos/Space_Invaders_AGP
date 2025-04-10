@@ -1,1 +1,1 @@
-# BEAUTYFUL SPACE INVADERS PROJECT
+# Condicions per guanyar i aspecte del joc

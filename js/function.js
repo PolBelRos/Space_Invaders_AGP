@@ -62,7 +62,7 @@ function StopGame(){
     GameArea.stop();
 }   
 
-//Inicializa el canvas
+//Inicializa el canvas y su ciclo de frames
 var GameArea = {
     canvas : document.createElement("canvas"),
     start : function() {

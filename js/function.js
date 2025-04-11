@@ -1,3 +1,4 @@
+const OBJETIVE = 10;
 const SPEED = 5;
 const SPEED_BULLET = 25;
 const SPEED_ENEMY_BULLET = 15;
@@ -23,8 +24,8 @@ var enemies = [];
 var gameLoaded = true;
 
 function StartGame(){
-    PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 700);
-    PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 700);
+    PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 700, 1);
+    PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 700, 2);
     createEnemies(50, 10, "https://i.ibb.co/fYGZWYsp/invader-4.png");
     createEnemies(50, 80, "https://i.ibb.co/5ypDzPg/invader-2.gif");
     createEnemies(50, 150, "https://i.ibb.co/5ypDzPg/invader-2.gif");
@@ -36,10 +37,14 @@ function StartGame(){
 }
 
 function RestartGame(){
-    GameArea.start();
     while(enemies.length > 0){
         enemies.pop();
     }
+    StartGame();
+}
+
+function ResumeGame(){
+    GameArea.start();
 }
 
 function StopGame(){
@@ -49,6 +54,7 @@ function StopGame(){
 var GameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
+        this.canvas.width = CANVAS_WIDTH;
         this.canvas.width = CANVAS_WIDTH;
         this.canvas.height = 800;
         this.context = this.canvas.getContext("2d");
@@ -70,13 +76,15 @@ var GameArea = {
     }
 }
 
-function component(width, height, color, x, y) {
+function component(width, height, color, x, y, numPlayer) {
+    this.numPlayer = numPlayer;
     this.width = width;
     this.height = height;
     this.speedX = 0;
     this.speedY = 0;
     this.x = x;
     this.y = y;
+    this.numHit = 0;
     this.lifes = PLAYER_LIFES;
     this.isDead = false;
     this.image = new Image();
@@ -85,6 +93,7 @@ function component(width, height, color, x, y) {
         this.loaded = true;
     }
     this.loaded = false;
+    
     this.update = function(){
         ctx = GameArea.context;
         if (this.loaded) {
@@ -94,6 +103,8 @@ function component(width, height, color, x, y) {
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
         if(this.isDead == true){
+            document.getElementById("victoryMessage").textContent = `Victoria ${this.numPlayer}`;
+            document.getElementById("restartBtn").style.display = "inline-block";
             GameArea.stop();
         }
     }
@@ -110,9 +121,14 @@ function component(width, height, color, x, y) {
             this.y = 0;
             this.speedX = 0;
             this.isDead = true;
+            document.getElementById("life5player" + this.numPlayer).src="img/sprites/hearts/heart_hollow.png";
+
         }
         else{
             this.lifes -= 1;
+            this.numHit++;
+            this.id = "life" + this.numHit + "player" + this.numPlayer;
+            document.getElementById(this.id).src="img/sprites/hearts/heart_hollow.png";
         }
     }
     this.hitBorder = function() {
@@ -124,6 +140,7 @@ function component(width, height, color, x, y) {
         if (this.x < 0) {
             this.x = 0;
         }
+
     }
 
     
@@ -144,8 +161,21 @@ function enemyComponent(width, height, color, x, y) {
     }
     this.loaded = false;
 
+    this.image = new Image();
+    this.image.src = color;
+    this.image.onload = () => {
+        this.loaded = true;
+    }
+    this.loaded = false;
+
     this.update = function(){
         ctx = GameArea.context;
+        if (this.loaded) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        } else {
+            ctx.fillStyle = "gray";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
         if (this.loaded) {
             ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         } else {
@@ -190,6 +220,7 @@ function bulletComponent(width, height, color, x, y) {
     this.speedY = 0;
     this.x = x;
     this.y = y;
+    this.player = 0;
     this.fromEnemy = false;
     this.image = new Image();
     this.image.src = color;
@@ -214,6 +245,7 @@ function bulletComponent(width, height, color, x, y) {
                     this.x = 0;
                     this.y = 0;
                     enemies[i].itCrashed();
+                    addScore(this.player);
                 }
             }
             else if (this.fromEnemy == true){
@@ -302,6 +334,8 @@ function updateGameArea() {
         enemyBullets[i].newPos();
         enemyBullets[i].update();
     }
+    
+
 }
 
 function leftMove(player){
@@ -323,6 +357,7 @@ function PlayerShoot(){
         if(currentTime - lastShotPlayerOne >= cooldown){
             let Bullet = new bulletComponent(BULLET_WIDTH, 20, "https://i.ibb.co/0p6HWWZr/rayo-aliado.png", PlayerOne.x + (PlayerOne.width/2 - (BULLET_WIDTH / 2)), PlayerOne.y);
             Bullet.speedY = -1 * SPEED_BULLET;
+            Bullet.player = 1;
             bullets.push(Bullet);
             lastShotPlayerOne = currentTime;
         }
@@ -331,10 +366,66 @@ function PlayerShoot(){
         if(currentTime - lastShotPlayerTwo >= cooldown){
             let Bullet = new bulletComponent(BULLET_WIDTH, 20, "https://i.ibb.co/0p6HWWZr/rayo-aliado.png", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
             Bullet.speedY = -1 * SPEED_BULLET;
+            Bullet.player = 2;
             bullets.push(Bullet);
             lastShotPlayerTwo = currentTime;
         }
     }
+
+}
+
+let score = {
+    1: 0,
+    2: 0
+};
+
+function addScore(player){
+    if (score[1] >= OBJETIVE || score[2] >= OBJETIVE) return;
+
+    score[player]++;
+    document.getElementById(`score${player}`).textContent = score[player];
+
+    if (score[player] === OBJETIVE){
+        document.getElementById("victoryMessage").textContent = `Victoria ${player}`;
+        document.getElementById("restartBtn").style.display = "inline-block";
+        GameArea.stop();
+    }
+}
+
+
+
+function restartGame(){
+    score[1] = 0;
+    score[2] = 0;
+
+    document.getElementById("score1").textContent = "0";
+
+    document.getElementById("score2").textContent = "0";
+
+    document.getElementById("victoryMessage").textContent = "";
+
+    document.getElementById("restartBtn").style.display = "none";
+
+    document.getElementById("life1player1").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life2player1").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life3player1").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life4player1").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life5player1").src = "img/sprites/hearts/heart_full.png"
+
+    document.getElementById("life1player2").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life2player2").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life3player2").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life4player2").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life5player2").src = "img/sprites/hearts/heart_full.png"
+
+    PlayerOne.lifes = PLAYER_LIFES;
+    PlayerOne.numHit = 0;
+    PlayerTwo.lifes = PLAYER_LIFES;
+    PlayerTwo.numHit = 0;
+
+
+    StopGame();
+    RestartGame();
 }
 
 function createEnemies(x, y, color){
@@ -363,3 +454,4 @@ function ShootEnemy(i) {
         }
     }
 }
+

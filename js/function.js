@@ -23,11 +23,12 @@ var enemies = [];
 function StartGame(){
     PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 720);
     PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 720);
-    createEnemies(50, 50, "https://i.ibb.co/5ypDzPg/invader-2.gif");
-    createEnemies(50, 120, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
-    createEnemies(50, 190, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
-    createEnemies(50, 260, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
-    createEnemies(50, 330, "https://i.ibb.co/3599fFLn/invader-3.gif");
+    createEnemies(50, 10, "https://i.ibb.co/5ypDzPg/invader-2.gif");
+    createEnemies(50, 80, "https://i.ibb.co/5ypDzPg/invader-2.gif");
+    createEnemies(50, 150, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
+    createEnemies(50, 220, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
+    createEnemies(50, 290, "https://i.ibb.co/3599fFLn/invader-3.gif");
+    createEnemies(50, 360, "https://i.ibb.co/3599fFLn/invader-3.gif");
     GameArea.start();
 }
 

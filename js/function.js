@@ -166,10 +166,20 @@ function bulletComponent(width, height, color, x, y) {
     this.x = x;
     this.y = y;
     this.fromEnemy = false;
+    this.image = new Image();
+    this.image.src = color;
+    this.image.onload = () => {
+        this.loaded = true;
+    }
+    this.loaded = false;
     this.update = function(){
         ctx = GameArea.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        if (this.loaded) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        } else {
+            ctx.fillStyle = "gray";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
         
         for(let i = 0; i < enemies.length; i++){
             if(this.fromEnemy == false){
@@ -281,7 +291,7 @@ function PlayerShoot(){
     let currentTime = new Date().getTime();
     if(GameArea.keys && GameArea.keys[32]){
         if(currentTime - lastShotPlayerOne >= cooldown){
-            let Bullet = new bulletComponent(BULLET_WIDTH, 20, "orange", PlayerOne.x + (PlayerOne.width/2 - (BULLET_WIDTH / 2)), PlayerOne.y);
+            let Bullet = new bulletComponent(BULLET_WIDTH, 20, "https://i.ibb.co/0p6HWWZr/rayo-aliado.png", PlayerOne.x + (PlayerOne.width/2 - (BULLET_WIDTH / 2)), PlayerOne.y);
             Bullet.speedY = -1 * SPEED_BULLET;
             bullets.push(Bullet);
             lastShotPlayerOne = currentTime;
@@ -289,7 +299,7 @@ function PlayerShoot(){
     }
     if(GameArea.keys && GameArea.keys[96]){
         if(currentTime - lastShotPlayerTwo >= cooldown){
-            let Bullet = new bulletComponent(BULLET_WIDTH, 20, "orange", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
+            let Bullet = new bulletComponent(BULLET_WIDTH, 20, "https://i.ibb.co/0p6HWWZr/rayo-aliado.png", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
             Bullet.speedY = -1 * SPEED_BULLET;
             bullets.push(Bullet);
             lastShotPlayerTwo = currentTime;
@@ -314,7 +324,7 @@ function ShootEnemy(i) {
     if(enemies[i].width != 0 && enemies.height != 0){
         if(randomNum >= 999){
             if(currentTime - lastShotEnemy >= enemyCooldown){
-                let Bullet = new bulletComponent(BULLET_WIDTH, 20, "red", enemies[i].x + (enemies[i].width/2 - (BULLET_WIDTH / 2)), enemies[i].y + enemies[i].height);
+                let Bullet = new bulletComponent(BULLET_WIDTH, 20, "https://i.ibb.co/qLsLr9zf/rayo-enemigo.png", enemies[i].x + (enemies[i].width/2 - (BULLET_WIDTH / 2)), enemies[i].y + enemies[i].height);
                 Bullet.speedY = 1 * SPEED_ENEMY_BULLET;
                 Bullet.fromEnemy = true;
                 enemyBullets.push(Bullet);

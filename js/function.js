@@ -17,6 +17,9 @@ let score = {
     1: 0,
     2: 0
 };
+let life1 = 5;
+let life2 = 5;
+
 
 function StartGame(){
     PlayerOne = new component(50, 30, "blue", 10, 720);

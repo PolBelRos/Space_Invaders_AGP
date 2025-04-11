@@ -4,6 +4,7 @@ const SPEED_ENEMY_BULLET = 15;
 const BULLET_WIDTH = 10;
 const NR_ENEMY_ROW = 20;
 const ENEMY_SPEED = 1.5;
+const PLAYER_LIFES = 5;
 
 var lastShotPlayerOne = 0;
 var lastShotPlayerTwo = 0;
@@ -55,7 +56,7 @@ function component(width, height, color, x, y) {
     this.speedY = 0;
     this.x = x;
     this.y = y;
-    this.lifes = 5;
+    this.lifes = PLAYER_LIFES;
     this.update = function(){
         ctx = GameArea.context;
         ctx.fillStyle = color;
@@ -67,12 +68,15 @@ function component(width, height, color, x, y) {
         this.hitBorder();
     }
     this.itCrashed = function(){
-        if(this.lifes == 0){
+        if(this.lifes == 1){
             this.width = 0;
             this.height = 0;
             this.x = 0;
             this.y = 0;
             this.speedX = 0;
+        }
+        else{
+            this.lifes -= 1;
         }
     }
     this.hitBorder = function() {

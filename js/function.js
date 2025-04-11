@@ -373,6 +373,12 @@ function restartGame(){
 
     document.getElementById("restartBtn").style.display = "none";
 
+    document.getElementById("life1player1").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life2player1").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life3player1").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life4player1").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life5player1").src = "img/sprites/hearts/heart_full.png"
+
     if(GameArea.keys && GameArea.keys[96]){
         if(currentTime - lastShotPlayerTwo >= cooldown){
             let Bullet = new bulletComponent(BULLET_WIDTH, 20, "orange", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
@@ -381,6 +387,11 @@ function restartGame(){
             lastShotPlayerTwo = currentTime;
         }
     }
+
+    PlayerOne.lifes = PLAYER_LIFES;
+    PlayerOne.numHit = 0;
+    PlayerTwo.lifes = PLAYER_LIFES;
+    PlayerTwo.numHit = 0;
 }
 
 function createEnemies(x, y, color){

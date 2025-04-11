@@ -235,6 +235,11 @@ function enemyComponent(width, height, color, x, y) {
                 enemies[i].y += 5;
             }
         }
+        if(this.y > 650){
+            document.getElementById("victoryMessage").textContent = `Both Players LOSE...`;
+            document.getElementById("restartBtn").style.display = "inline-block";
+            GameArea.stop();
+        }
     }
 }
 

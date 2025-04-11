@@ -65,6 +65,7 @@ function component(width, height, color, x, y) {
     this.x = x;
     this.y = y;
     this.lifes = PLAYER_LIFES;
+    this.isDead = false;
     this.image = new Image();
     this.image.src = color;
     this.image.onload = () => {
@@ -79,6 +80,9 @@ function component(width, height, color, x, y) {
             ctx.fillStyle = "gray";
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
+        if(this.isDead == true){
+            GameArea.stop();
+        }
     }
     this.newPos = function() {
         this.x += this.speedX;
@@ -92,7 +96,7 @@ function component(width, height, color, x, y) {
             this.x = 0;
             this.y = 0;
             this.speedX = 0;
-            GameArea.stop();
+            this.isDead = true;
         }
         else{
             this.lifes -= 1;
@@ -108,13 +112,15 @@ function component(width, height, color, x, y) {
             this.x = 0;
         }
     }
+
+    
 }
 
 function enemyComponent(width, height, color, x, y) {
     this.width = width;
     this.height = height;
-    //this.speedX = -1 * ENEMY_SPEED;
-    this.speedX = 0;
+    this.speedX = -1 * ENEMY_SPEED;
+    //this.speedX = 0;
     this.speedY = 0;
     this.x = x;
     this.y = y;

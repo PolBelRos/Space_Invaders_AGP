@@ -46,9 +46,12 @@ button{
     position: absolute;
 }
 canvas {
-    border:1px solid #d3d3d3;
+    image-rendering: pixelated;
 
-    background-color: #f1f1f1;
+    background-color: #2f054b;
+    background-image: url(../img/sprites/background/space.png);
+    background-repeat: no-repeat;
+    background-size: 110%;
     transform: translate(15%, 0%);
 }
 

@@ -258,10 +258,10 @@ function bulletComponent(width, height, color, x, y) {
 function updateGameArea() {
     GameArea.clear();
 
-    if(gameLoaded == true){
+    /*if(gameLoaded == true){
         StopGame();
         gameLoaded = false;
-    }
+    }*/
 
     stopMove();
 

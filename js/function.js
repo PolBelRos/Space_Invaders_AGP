@@ -21,22 +21,20 @@ var bullets = [];
 var enemyBullets = [];
 var enemies = [];
 
-let score = {
-    1: 0,
-    2: 0
-};
+
 let life1 = 5;
 let life2 = 5;
 
 
 function StartGame(){
-    PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 720);
-    PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 720);
-    createEnemies(50, 50, "https://i.ibb.co/5ypDzPg/invader-2.gif");
-    createEnemies(50, 120, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
-    createEnemies(50, 190, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
-    createEnemies(50, 260, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
-    createEnemies(50, 330, "https://i.ibb.co/3599fFLn/invader-3.gif");
+    PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 720, 1);
+    PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 720, 2);
+    createEnemies(50, 10, "https://i.ibb.co/5ypDzPg/invader-2.gif");
+    createEnemies(50, 80, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
+    createEnemies(50, 150, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
+    createEnemies(50, 220, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
+    createEnemies(50, 290, "https://i.ibb.co/3599fFLn/invader-3.gif");
+    createEnemies(50, 360, "https://i.ibb.co/3599fFLn/invader-3.gif");
     GameArea.start();
     
 }
@@ -63,13 +61,15 @@ var GameArea = {
     }
 }
 
-function component(width, height, color, x, y) {
+function component(width, height, color, x, y, numPlayer) {
+    this.numPlayer = numPlayer;
     this.width = width;
     this.height = height;
     this.speedX = 0;
     this.speedY = 0;
     this.x = x;
     this.y = y;
+    this.numHit = 0;
     this.lifes = PLAYER_LIFES;
     this.image = new Image();
     this.image.src = color;
@@ -111,9 +111,13 @@ function component(width, height, color, x, y) {
             this.x = 0;
             this.y = 0;
             this.speedX = 0;
+            document.getElementById("life5player" + this.numPlayer).src="img/sprites/hearts/heart_hollow.png"
         }
         else{
+            this.numHit += 1;
             this.lifes -= 1;
+            this.id = "life" + this.numHit + "player" + this.numPlayer;
+            document.getElementById(this.id).src="img/sprites/hearts/heart_hollow.png"
         }
     }
     this.hitBorder = function() {
@@ -340,11 +344,13 @@ function PlayerShoot(){
     }
 }
 
+let score = {
+    1: 0,
+    2: 0
+};
 
 function addScore(player){
-    if (score[1] >= OBJETIVE || score[2] >= OBJETIVE) {
-        return;
-    }
+    if (score[1] >= OBJETIVE || score[2] >= OBJETIVE) return;
 
     score[player]++;
     document.getElementById(`score${player}`).textContent = score[player];
@@ -403,3 +409,4 @@ function ShootEnemy(i) {
         }
     }
 }
+

@@ -1,3 +1,4 @@
+
 .canvas{
     border: 1px solid blue;
     position: relative;
@@ -54,6 +55,6 @@ canvas {
 .life{
     width: 50px;
     height: 50px;
-    background-color: #240746;
-    
+    image-rendering: pixelated;
+    margin: 0px 5px;
 }

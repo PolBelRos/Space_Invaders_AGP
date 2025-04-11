@@ -2,15 +2,21 @@ var PlayerOne;
 const OBJETIVE = 10;
 const SPEED = 5;
 const SPEED_BULLET = 25;
+const SPEED_ENEMY_BULLET = 15;
 const BULLET_WIDTH = 10;
 const NR_ENEMY_ROW = 15;
 const ENEMY_SPEED = 1.5;
+const PLAYER_LIFES = 5;
 
 var lastShotPlayerOne = 0;
 var lastShotPlayerTwo = 0;
-var cooldown = 500;
+var lastShotEnemy = 0;
+
+var cooldown = 600;
+var enemyCooldown = 200;
 
 var bullets = [];
+var enemyBullets = [];
 var enemies = [];
 
 let score = {
@@ -23,9 +29,12 @@ let life2 = 5;
 
 function StartGame(){
     PlayerOne = new component(50, 30, "blue", 10, 720);
-    PlayerTwo = new component(50, 30, "red", 740, 720);
-    createEnemies(50,50,"purple");
-    createEnemies(50,120,"purple");
+    PlayerTwo = new component(50, 30, "green", 740, 720);
+    createEnemies(50, 50, "purple");
+    createEnemies(50, 120, "purple");
+    createEnemies(50, 190, "purple");
+    createEnemies(50, 260, "purple");
+    createEnemies(50, 330, "purple");
     GameArea.start();
     
 }
@@ -58,6 +67,7 @@ function component(width, height, color, x, y) {
     this.speedY = 0;
     this.x = x;
     this.y = y;
+    this.lifes = PLAYER_LIFES;
     this.update = function(){
         ctx = GameArea.context;
         ctx.fillStyle = color;
@@ -68,6 +78,18 @@ function component(width, height, color, x, y) {
         this.y += this.speedY;
         this.hitBorder();
     }
+    this.itCrashed = function(){
+        if(this.lifes == 1){
+            this.width = 0;
+            this.height = 0;
+            this.x = 0;
+            this.y = 0;
+            this.speedX = 0;
+        }
+        else{
+            this.lifes -= 1;
+        }
+    }
     this.hitBorder = function() {
         var limitRight = GameArea.canvas.width - this.width;
 
@@ -77,7 +99,10 @@ function component(width, height, color, x, y) {
         if (this.x < 0) {
             this.x = 0;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> f3379743b2f1572f75243282624ffab8fd9ad84f
     }
 }
 
@@ -137,7 +162,6 @@ function bulletComponent(width, height, color, x, y) {
         ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
         
-        
         for(let i = 0; i < enemies.length; i++){
             if(this.fromEnemy == false){
                 if(this.crashObject(enemies[i])){
@@ -150,11 +174,19 @@ function bulletComponent(width, height, color, x, y) {
                 }
             }
             else if (this.fromEnemy == true){
-                if(this.crashObject(PlayerOne) || this.crashObject(PlayerTwo)){
+                if(this.crashObject(PlayerOne)){
                     this.width = 0;
                     this.height = 0;
                     this.x = 0;
                     this.y = 0;
+                    PlayerOne.itCrashed();
+                }
+                if(this.crashObject(PlayerTwo)){
+                    this.width = 0;
+                    this.height = 0;
+                    this.x = 0;
+                    this.y = 0;
+                    PlayerTwo.itCrashed();
                 }
             }
         }
@@ -205,6 +237,10 @@ function updateGameArea() {
     PlayerShoot();
 
     for (let i = 0; i < enemies.length; i++){
+        ShootEnemy(i);
+    }
+
+    for (let i = 0; i < enemies.length; i++){
         enemies[i].newPos();
         enemies[i].update();
     }
@@ -214,8 +250,15 @@ function updateGameArea() {
         bullets[i].update();
     }
 
+<<<<<<< HEAD
     
 
+=======
+    for (let i = 0; i < enemyBullets.length; i++){
+        enemyBullets[i].newPos();
+        enemyBullets[i].update();
+    }
+>>>>>>> f3379743b2f1572f75243282624ffab8fd9ad84f
 }
 
 function leftMove(player){
@@ -296,5 +339,22 @@ function createEnemies(x, y, color){
         enemies.push(enemy);
 
         pos += 70;
+    }
+}
+
+function ShootEnemy(i) {
+    let currentTime = new Date().getTime();
+    var randomNum = Math.random() * 1000;
+
+    if(enemies[i].width != 0 && enemies.height != 0){
+        if(randomNum >= 999){
+            if(currentTime - lastShotEnemy >= enemyCooldown){
+                let Bullet = new bulletComponent(BULLET_WIDTH, 20, "red", enemies[i].x + (enemies[i].width/2 - (BULLET_WIDTH / 2)), enemies[i].y + enemies[i].height);
+                Bullet.speedY = 1 * SPEED_ENEMY_BULLET;
+                Bullet.fromEnemy = true;
+                enemyBullets.push(Bullet);
+                lastShotEnemy = currentTime;
+            }
+        }
     }
 }

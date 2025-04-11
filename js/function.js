@@ -66,6 +66,15 @@ function component(width, height, color, x, y) {
         this.y += this.speedY;
         this.hitBorder();
     }
+    this.itCrashed = function(){
+        if(this.lifes == 0){
+            this.width = 0;
+            this.height = 0;
+            this.x = 0;
+            this.y = 0;
+            this.speedX = 0;
+        }
+    }
     this.hitBorder = function() {
         var limitRight = GameArea.canvas.width - this.width;
 
@@ -149,12 +158,14 @@ function bulletComponent(width, height, color, x, y) {
                     this.height = 0;
                     this.x = 0;
                     this.y = 0;
+                    PlayerOne.itCrashed();
                 }
                 if(this.crashObject(PlayerTwo)){
                     this.width = 0;
                     this.height = 0;
                     this.x = 0;
                     this.y = 0;
+                    PlayerTwo.itCrashed();
                 }
             }
         }

@@ -1,17 +1,11 @@
-var PlayerOne;
 const OBJETIVE = 10;
 const SPEED = 5;
 const SPEED_BULLET = 25;
 const SPEED_ENEMY_BULLET = 15;
 const BULLET_WIDTH = 10;
-<<<<<<< HEAD
-const NR_ENEMY_ROW = 2;
+const NR_ENEMY_ROW = 15;
 const ENEMY_SPEED = 1.5;
-=======
-const NR_ENEMY_ROW = 20;
-const ENEMY_SPEED = 2;
 const PLAYER_LIFES = 5;
->>>>>>> ce3df8f92a07065ff65fd10ee0e0adaf9ee5206e
 const PLAYER_SPAWN = 400;
 const CANVAS_WIDTH = 1500;
 const PLAYER_WIDTH = 70;
@@ -38,20 +32,11 @@ let life2 = 5;
 function StartGame(){
     PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 720);
     PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 720);
-<<<<<<< HEAD
     createEnemies(50, 50, "https://i.ibb.co/5ypDzPg/invader-2.gif");
     createEnemies(50, 120, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
     createEnemies(50, 190, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
     createEnemies(50, 260, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
     createEnemies(50, 330, "https://i.ibb.co/3599fFLn/invader-3.gif");
-=======
-    createEnemies(50, 10, "https://i.ibb.co/5ypDzPg/invader-2.gif");
-    createEnemies(50, 80, "https://i.ibb.co/5ypDzPg/invader-2.gif");
-    createEnemies(50, 150, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
-    createEnemies(50, 220, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
-    createEnemies(50, 290, "https://i.ibb.co/3599fFLn/invader-3.gif");
-    createEnemies(50, 360, "https://i.ibb.co/3599fFLn/invader-3.gif");
->>>>>>> ce3df8f92a07065ff65fd10ee0e0adaf9ee5206e
     GameArea.start();
     
 }
@@ -59,6 +44,7 @@ function StartGame(){
 var GameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
+        this.canvas.width = CANVAS_WIDTH;
         this.canvas.width = CANVAS_WIDTH;
         this.canvas.height = 800;
         this.context = this.canvas.getContext("2d");
@@ -91,8 +77,21 @@ function component(width, height, color, x, y) {
         this.loaded = true;
     }
     this.loaded = false;
+    this.lifes = PLAYER_LIFES;
+    this.image = new Image();
+    this.image.src = color;
+    this.image.onload = () => {
+        this.loaded = true;
+    }
+    this.loaded = false;
     this.update = function(){
         ctx = GameArea.context;
+        if (this.loaded) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        } else {
+            ctx.fillStyle = "gray";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
         if (this.loaded) {
             ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         } else {
@@ -126,10 +125,7 @@ function component(width, height, color, x, y) {
         if (this.x < 0) {
             this.x = 0;
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> ce3df8f92a07065ff65fd10ee0e0adaf9ee5206e
     }
 }
 
@@ -147,8 +143,21 @@ function enemyComponent(width, height, color, x, y) {
     }
     this.loaded = false;
 
+    this.image = new Image();
+    this.image.src = color;
+    this.image.onload = () => {
+        this.loaded = true;
+    }
+    this.loaded = false;
+
     this.update = function(){
         ctx = GameArea.context;
+        if (this.loaded) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        } else {
+            ctx.fillStyle = "gray";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
         if (this.loaded) {
             ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         } else {
@@ -288,15 +297,12 @@ function updateGameArea() {
         bullets[i].update();
     }
 
-<<<<<<< HEAD
-    
-
-=======
     for (let i = 0; i < enemyBullets.length; i++){
         enemyBullets[i].newPos();
         enemyBullets[i].update();
     }
->>>>>>> ce3df8f92a07065ff65fd10ee0e0adaf9ee5206e
+    
+
 }
 
 function leftMove(player){

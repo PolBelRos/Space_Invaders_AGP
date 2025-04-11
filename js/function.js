@@ -23,14 +23,9 @@ var enemies = [];
 
 var gameLoaded = true;
 
-
-let life1 = 5;
-let life2 = 5;
-
-
 function StartGame(){
-    PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 700);
-    PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 700);
+    PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 700, 1);
+    PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 700, 2);
     createEnemies(50, 10, "https://i.ibb.co/fYGZWYsp/invader-4.png");
     createEnemies(50, 80, "https://i.ibb.co/5ypDzPg/invader-2.gif");
     createEnemies(50, 150, "https://i.ibb.co/5ypDzPg/invader-2.gif");
@@ -42,10 +37,14 @@ function StartGame(){
 }
 
 function RestartGame(){
-    GameArea.start();
     while(enemies.length > 0){
         enemies.pop();
     }
+    StartGame();
+}
+
+function ResumeGame(){
+    GameArea.start();
 }
 
 function StopGame(){
@@ -104,6 +103,8 @@ function component(width, height, color, x, y, numPlayer) {
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
         if(this.isDead == true){
+            document.getElementById("victoryMessage").textContent = `Victoria ${this.numPlayer}`;
+            document.getElementById("restartBtn").style.display = "inline-block";
             GameArea.stop();
         }
     }
@@ -120,13 +121,14 @@ function component(width, height, color, x, y, numPlayer) {
             this.y = 0;
             this.speedX = 0;
             this.isDead = true;
-            document.getElementById("life5player" + this.numPlayer).src="img/sprites/hearts/heart_hollow.png"
+            document.getElementById("life5player" + this.numPlayer).src="img/sprites/hearts/heart_hollow.png";
+
         }
         else{
-            this.numHit += 1;
             this.lifes -= 1;
+            this.numHit++;
             this.id = "life" + this.numHit + "player" + this.numPlayer;
-            document.getElementById(this.id).src="img/sprites/hearts/heart_hollow.png"
+            document.getElementById(this.id).src="img/sprites/hearts/heart_hollow.png";
         }
     }
     this.hitBorder = function() {
@@ -370,10 +372,6 @@ function PlayerShoot(){
         }
     }
 
-    PlayerOne.lifes = PLAYER_LIFES;
-    PlayerOne.numHit = 0;
-    PlayerTwo.lifes = PLAYER_LIFES;
-    PlayerTwo.numHit = 0;
 }
 
 let score = {
@@ -390,8 +388,11 @@ function addScore(player){
     if (score[player] === OBJETIVE){
         document.getElementById("victoryMessage").textContent = `Victoria ${player}`;
         document.getElementById("restartBtn").style.display = "inline-block";
+        GameArea.stop();
     }
 }
+
+
 
 function restartGame(){
     score[1] = 0;
@@ -411,19 +412,20 @@ function restartGame(){
     document.getElementById("life4player1").src = "img/sprites/hearts/heart_full.png"
     document.getElementById("life5player1").src = "img/sprites/hearts/heart_full.png"
 
-    if(GameArea.keys && GameArea.keys[96]){
-        if(currentTime - lastShotPlayerTwo >= cooldown){
-            let Bullet = new bulletComponent(BULLET_WIDTH, 20, "https://i.ibb.co/0p6HWWZr/rayo-aliado.png", PlayerTwo.x + (PlayerTwo.width/2 - (BULLET_WIDTH / 2)), PlayerTwo.y);
-            Bullet.speedY = -1 * SPEED_BULLET;
-            bullets.push(Bullet);
-            lastShotPlayerTwo = currentTime;
-        }
-    }
+    document.getElementById("life1player2").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life2player2").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life3player2").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life4player2").src = "img/sprites/hearts/heart_full.png"
+    document.getElementById("life5player2").src = "img/sprites/hearts/heart_full.png"
 
     PlayerOne.lifes = PLAYER_LIFES;
     PlayerOne.numHit = 0;
     PlayerTwo.lifes = PLAYER_LIFES;
     PlayerTwo.numHit = 0;
+
+
+    StopGame();
+    RestartGame();
 }
 
 function createEnemies(x, y, color){

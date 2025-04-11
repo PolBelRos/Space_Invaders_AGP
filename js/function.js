@@ -20,6 +20,8 @@ var bullets = [];
 var enemyBullets = [];
 var enemies = [];
 
+var gameLoaded = true;
+
 function StartGame(){
     PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 700);
     PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 700);
@@ -29,9 +31,20 @@ function StartGame(){
     createEnemies(50, 220, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
     createEnemies(50, 290, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
     createEnemies(50, 360, "https://i.ibb.co/3599fFLn/invader-3.gif");
-    createEnemies(50, 410, "https://i.ibb.co/3599fFLn/invader-3.gif");
+    createEnemies(50, 430, "https://i.ibb.co/3599fFLn/invader-3.gif");
     GameArea.start();
 }
+
+function RestartGame(){
+    GameArea.start();
+    while(enemies.length > 0){
+        enemies.pop();
+    }
+}
+
+function StopGame(){
+    GameArea.stop();
+}   
 
 var GameArea = {
     canvas : document.createElement("canvas"),
@@ -244,6 +257,11 @@ function bulletComponent(width, height, color, x, y) {
 
 function updateGameArea() {
     GameArea.clear();
+
+    if(gameLoaded == true){
+        StopGame();
+        gameLoaded = false;
+    }
 
     stopMove();
 

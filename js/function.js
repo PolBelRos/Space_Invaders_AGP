@@ -20,11 +20,11 @@ var enemies = [];
 function StartGame(){
     PlayerOne = new component(50, 30, "blue", 10, 720);
     PlayerTwo = new component(50, 30, "green", 740, 720);
-    createEnemies(50, 50, "purple");
-    createEnemies(50, 120, "purple");
-    createEnemies(50, 190, "purple");
-    createEnemies(50, 260, "purple");
-    createEnemies(50, 330, "purple");
+    createEnemies(50, 50, "https://gamefaqs.gamespot.com/a/review/28/169928-1.gif");
+    createEnemies(50, 120, "https://gamefaqs.gamespot.com/a/review/28/169928-1.gif");
+    createEnemies(50, 190, "https://gamefaqs.gamespot.com/a/review/28/169928-1.gif");
+    createEnemies(50, 260, "https://gamefaqs.gamespot.com/a/review/28/169928-1.gif");
+    createEnemies(50, 330, "https://gamefaqs.gamespot.com/a/review/28/169928-1.gif");
     GameArea.start();
 }
 
@@ -98,10 +98,22 @@ function enemyComponent(width, height, color, x, y) {
     this.speedY = 0;
     this.x = x;
     this.y = y;
+
+    this.image = new Image();
+    this.image.src = color;
+    this.image.onload = () => {
+        this.loaded = true;
+    }
+    this.loaded = false;
+
     this.update = function(){
         ctx = GameArea.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        if (this.loaded) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        } else {
+            ctx.fillStyle = "gray";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
     this.newPos = function() {
         this.x += this.speedX;

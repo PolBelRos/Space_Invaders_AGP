@@ -10,6 +10,7 @@ const PLAYER_SPAWN = 400;
 const CANVAS_WIDTH = 1500;
 const PLAYER_WIDTH = 70;
 const SCORE_UP = 1;
+const MAX_ENEMY_HEIGHT = 650;
 
 var lastShotPlayerOne = 0;
 var lastShotPlayerTwo = 0;
@@ -235,7 +236,7 @@ function enemyComponent(width, height, color, x, y) {
                 enemies[i].y += 5;
             }
         }
-        if(this.y > 650){
+        if(this.y > MAX_ENEMY_HEIGHT){
             document.getElementById("victoryMessage").textContent = `Both Players LOSE...`;
             document.getElementById("restartBtn").style.display = "inline-block";
             GameArea.stop();

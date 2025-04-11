@@ -20,9 +20,10 @@
                 <img id="life4player1" class="player1 life" src="img/sprites/hearts/heart_full.png" alt="">
                 <img id="life5player1" class="player1 life" src="img/sprites/hearts/heart_full.png" alt=""> 
             </div>
-            <div class="col">
+            <div class="col mensajeVictoria">
                 <p id="victoryMessage"></p>
                 <button id="restartBtn" onclick="restartGame()" style="display: none;">Restart game</button>
+                <button id="startButton" onmouseup="ResumeGame()">Empezar</button>
             </div>
             <div class="col player2" id="playerLive2">
                 <h3>Player 2: <span id="score2">0</span></h3>
@@ -36,9 +37,6 @@
         </div>
 
     </div>
-
-    <button onclick="StopGame()">Parar</button>
-    <button onmouseup="ResumeGame()">Empezar</button>
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="js/function.js"></script>

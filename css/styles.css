@@ -61,3 +61,12 @@ canvas {
     image-rendering: pixelated;
     margin: 0px 5px;
 }
+
+button{
+    width: 200px;
+    height: 50px;
+}
+
+.mensajeVictoria{
+    text-align: center;
+}

@@ -3,7 +3,7 @@ const SPEED_BULLET = 25;
 const SPEED_ENEMY_BULLET = 15;
 const BULLET_WIDTH = 10;
 const NR_ENEMY_ROW = 20;
-const ENEMY_SPEED = 2;
+const ENEMY_SPEED = 1.2;
 const PLAYER_LIFES = 5;
 const PLAYER_SPAWN = 400;
 const CANVAS_WIDTH = 1500;
@@ -21,14 +21,15 @@ var enemyBullets = [];
 var enemies = [];
 
 function StartGame(){
-    PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 720);
-    PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 720);
-    createEnemies(50, 10, "https://i.ibb.co/5ypDzPg/invader-2.gif");
+    PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 700);
+    PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 700);
+    createEnemies(50, 10, "https://i.ibb.co/fYGZWYsp/invader-4.png");
     createEnemies(50, 80, "https://i.ibb.co/5ypDzPg/invader-2.gif");
-    createEnemies(50, 150, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
+    createEnemies(50, 150, "https://i.ibb.co/5ypDzPg/invader-2.gif");
     createEnemies(50, 220, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
-    createEnemies(50, 290, "https://i.ibb.co/3599fFLn/invader-3.gif");
+    createEnemies(50, 290, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
     createEnemies(50, 360, "https://i.ibb.co/3599fFLn/invader-3.gif");
+    createEnemies(50, 410, "https://i.ibb.co/3599fFLn/invader-3.gif");
     GameArea.start();
 }
 
@@ -50,6 +51,9 @@ var GameArea = {
     },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop : function() {
+        clearInterval(this.interval);
     }
 }
 
@@ -88,6 +92,7 @@ function component(width, height, color, x, y) {
             this.x = 0;
             this.y = 0;
             this.speedX = 0;
+            GameArea.stop();
         }
         else{
             this.lifes -= 1;
@@ -108,7 +113,8 @@ function component(width, height, color, x, y) {
 function enemyComponent(width, height, color, x, y) {
     this.width = width;
     this.height = height;
-    this.speedX = -1 * ENEMY_SPEED;
+    //this.speedX = -1 * ENEMY_SPEED;
+    this.speedX = 0;
     this.speedY = 0;
     this.x = x;
     this.y = y;
@@ -146,13 +152,13 @@ function enemyComponent(width, height, color, x, y) {
         if (this.x > limitRight) {
             for(let i = 0; i < enemies.length; i++){
                 enemies[i].speedX *= -1;
-                enemies[i].y += 10;
+                enemies[i].y += 5;
             }
         }
         if (this.x < 0) {
             for(let i = 0; i < enemies.length; i++){
                 enemies[i].speedX *= -1;
-                enemies[i].y += 10;
+                enemies[i].y += 5;
             }
         }
     }

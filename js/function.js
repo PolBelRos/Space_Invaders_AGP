@@ -3,8 +3,17 @@ const OBJETIVE = 10;
 const SPEED = 5;
 const SPEED_BULLET = 25;
 const BULLET_WIDTH = 10;
+<<<<<<< HEAD
 const NR_ENEMY_ROW = 15;
 const ENEMY_SPEED = 1.5;
+=======
+const NR_ENEMY_ROW = 20;
+const ENEMY_SPEED = 2;
+const PLAYER_LIFES = 5;
+const PLAYER_SPAWN = 400;
+const CANVAS_WIDTH = 1500;
+const PLAYER_WIDTH = 70;
+>>>>>>> c7f883ff191842cbc77d6574f4e46be822ea8d78
 
 var lastShotPlayerOne = 0;
 var lastShotPlayerTwo = 0;
@@ -22,13 +31,13 @@ let life2 = 5;
 
 
 function StartGame(){
-    PlayerOne = new component(50, 30, "blue", 10, 720);
-    PlayerTwo = new component(50, 30, "green", 740, 720);
-    createEnemies(50, 50, "purple");
-    createEnemies(50, 120, "purple");
-    createEnemies(50, 190, "purple");
-    createEnemies(50, 260, "purple");
-    createEnemies(50, 330, "purple");
+    PlayerOne = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/zV5x1hZK/player-1.gif", PLAYER_SPAWN, 720);
+    PlayerTwo = new component(PLAYER_WIDTH, 70, "https://i.ibb.co/Q3LjjXmc/player-2.gif", (CANVAS_WIDTH - PLAYER_SPAWN - PLAYER_WIDTH), 720);
+    createEnemies(50, 50, "https://i.ibb.co/5ypDzPg/invader-2.gif");
+    createEnemies(50, 120, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
+    createEnemies(50, 190, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
+    createEnemies(50, 260, "https://i.ibb.co/S7P0gwMq/invader-1.gif");
+    createEnemies(50, 330, "https://i.ibb.co/3599fFLn/invader-3.gif");
     GameArea.start();
     
 }
@@ -36,7 +45,11 @@ function StartGame(){
 var GameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
+<<<<<<< HEAD
         this.canvas.width = 1500;
+=======
+        this.canvas.width = CANVAS_WIDTH;
+>>>>>>> c7f883ff191842cbc77d6574f4e46be822ea8d78
         this.canvas.height = 800;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -61,10 +74,24 @@ function component(width, height, color, x, y) {
     this.speedY = 0;
     this.x = x;
     this.y = y;
+<<<<<<< HEAD
+=======
+    this.lifes = PLAYER_LIFES;
+    this.image = new Image();
+    this.image.src = color;
+    this.image.onload = () => {
+        this.loaded = true;
+    }
+    this.loaded = false;
+>>>>>>> c7f883ff191842cbc77d6574f4e46be822ea8d78
     this.update = function(){
         ctx = GameArea.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        if (this.loaded) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        } else {
+            ctx.fillStyle = "gray";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
     this.newPos = function() {
         this.x += this.speedX;
@@ -91,10 +118,21 @@ function enemyComponent(width, height, color, x, y) {
     this.speedY = 0;
     this.x = x;
     this.y = y;
+    this.image = new Image();
+    this.image.src = color;
+    this.image.onload = () => {
+        this.loaded = true;
+    }
+    this.loaded = false;
+
     this.update = function(){
         ctx = GameArea.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        if (this.loaded) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        } else {
+            ctx.fillStyle = "gray";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
     this.newPos = function() {
         this.x += this.speedX;
